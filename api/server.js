@@ -13,7 +13,7 @@ const apiUrl = process.env.LONGSHOT_AI_API_URL;
 const token = process.env.LONGSHOT_AI_TOKEN;
 
 app.post("/", async (req, res) => {
-    const { input } = req.body; // Assuming the input is sent in the request body
+    const { input } = req.body;
     const requestData = { text: input };
 
     const response = await axios.post(apiUrl, requestData, {

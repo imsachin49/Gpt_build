@@ -7,10 +7,12 @@ import bot from "../assets/bot.png";
 import { autoTypingBotResponse } from "../utils/autoTyping";
 import { useNavigate } from 'react-router-dom';
 import { BsSend } from "react-icons/bs";
+import { LuUser2 } from "react-icons/lu";
 
 function ChatSection() {
     const [input, setInput] = useState("");
     const [posts, setPosts] = useState([]);
+    const [query, setQuery] = useState("")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,7 +39,7 @@ function ChatSection() {
         };
         updatePosts(userPost, true); // Pass true to indicate loading state
         setInput("");
-
+        setQuery(input)
         try {
             const { data } = await axios.post("http://localhost:8800", { input }, { headers: { "Content-Type": "application/json" } });
             const botPost = {
@@ -46,6 +48,7 @@ function ChatSection() {
                 question: input,
                 post: data.bot.copies[0]?.content?.trim(),
             };
+            setQuery("");
             updatePosts(botPost);
             navigate(`/c/${botPost?.id}`);
         } catch (error) {
@@ -57,7 +60,9 @@ function ChatSection() {
                 type: "bot",
                 post: "Error fetching bot response",
             };
-            updatePosts(errorPost);
+            alert("Error fetching bot response");
+            setQuery("")
+            return;
         }
     };
 
@@ -95,6 +100,13 @@ function ChatSection() {
             <section className="chat-container">
                 <div className="layout">
                     <p className="text-2xl font-nunito font-extrabold text-gray-400">LongShot AI</p>
+                    {query && <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                            <LuUser2 size={32} className="border rounded-full p-1 text-xs font-thin" />
+                            <span className="text-[2rem] font-candara text-gray-200 font-extrabold">You</span>
+                        </div>
+                        <p className="text-md font-nunito font-bold text-gray-300 ml-10">{query}</p>
+                    </div>}
                 </div>
             </section>
             <footer>
