@@ -72,7 +72,7 @@ function ChatSection() {
 
     const updatePosts = (post, isLoading) => {
         if (isLoading) {
-            // Show loading state
+            autoTypingBotResponse(post); // Add a bot response with typing indicator
             setPosts((prevState) => [
                 ...prevState,
                 {
@@ -110,7 +110,10 @@ function ChatSection() {
                             <span className="text-[2rem] font-candara text-gray-200 font-extrabold">You</span>
                         </div>
                         <p className="text-md font-nunito font-bold text-gray-300 ml-10">{query}</p>
-                    </div>}
+                        </div>}
+                        {
+                            loading && <p className="text-md font-nunito font-bold text-gray-300 ml-10">Loading...</p>
+                        }
                 </div>
             </section>
             <footer>
