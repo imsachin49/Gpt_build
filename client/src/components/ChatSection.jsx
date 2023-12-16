@@ -12,7 +12,8 @@ import { LuUser2 } from "react-icons/lu";
 function ChatSection() {
     const [input, setInput] = useState("");
     const [posts, setPosts] = useState([]);
-    const [query, setQuery] = useState("")
+    const [query, setQuery] = useState("");
+    const [loading,setLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,6 +42,7 @@ function ChatSection() {
         setInput("");
         setQuery(input)
         try {
+            setLoading(true);
             const { data } = await axios.post("http://localhost:8800", { input }, { headers: { "Content-Type": "application/json" } });
             const botPost = {
                 id: Date.now(),
@@ -49,6 +51,7 @@ function ChatSection() {
                 post: data.bot.copies[0]?.content?.trim(),
             };
             setQuery("");
+            setLoading(false);
             updatePosts(botPost);
             navigate(`/c/${botPost?.id}`);
         } catch (error) {
@@ -64,6 +67,7 @@ function ChatSection() {
             setQuery("")
             return;
         }
+        setLoading(false);
     };
 
     const updatePosts = (post, isLoading) => {
