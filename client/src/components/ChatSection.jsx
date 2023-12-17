@@ -43,7 +43,10 @@ function ChatSection() {
         setQuery(input)
         try {
             setLoading(true);
-            const { data } = await axios.post("http://localhost:8800", { input }, { headers: { "Content-Type": "application/json" } });
+            const { data } = await axios.post(
+                // "http://localhost:8800",
+                "https://gpt-build-two.vercel.app", 
+            { input }, { headers: { "Content-Type": "application/json" } });
             const botPost = {
                 id: Date.now(),
                 type: "bot",
@@ -55,6 +58,7 @@ function ChatSection() {
             updatePosts(botPost);
             navigate(`/c/${botPost?.id}`);
         } catch (error) {
+            setLoading(false);
             alert("Error fetching bot response");
             console.error("Error fetching bot response:", error);
             const errorPost = {
